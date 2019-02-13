@@ -1,23 +1,39 @@
-    public static class DelegateTool
-    {
-        delegate void LblTextHandler(Label lbl, string text);
-        delegate void TxtWriteHandler(TextBox txt, string str);
-        delegate void RtbWriteHandler(RichTextBox txt, string str);
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-        public static void LblText(Label lbl, string text)
+using System.Windows.Forms;//記得把WinForm.dll加入專案中
+
+namespace DelegateTool
+{
+    public static class UIDelegate
+    {
+        /**
+         * [引數]
+         * 1.用text代表取代內文
+         * 2.用str代表繼續往下寫
+         */
+
+        delegate void LblTextCB(Label lbl, string text);
+        delegate void TxtWriteCB(TextBox txt, string str);
+        delegate void RtbWriteCB(RichTextBox rtb, string str);
+
+        public static void LblText(Label lbl, string str)
         {
-            if(lbl == null)
+            if (lbl == null)
             {
                 return;
             }
             if (lbl.InvokeRequired)
             {
-                LblTextHandler handle = new LblTextHandler(LblText);
-                lbl.Invoke(handle, lbl, text);
+                LblTextCB handle = new LblTextCB(LblText);
+                lbl.Invoke(handle, lbl, str);
             }
             else
             {
-                lbl.Text = text;
+                lbl.Text = str;
             }
         }
 
@@ -29,7 +45,7 @@
             }
             if (txt.InvokeRequired)
             {
-                TxtWriteHandler handle = new TxtWriteHandler(TxtWrite);
+                TxtWriteCB handle = new TxtWriteCB(TxtWrite);
                 txt.Invoke(handle, txt, str);
             }
             else
@@ -46,7 +62,7 @@
             }
             if (rtb.InvokeRequired)
             {
-                RtbWriteHandler handle = new RtbWriteHandler(RtbWrite);
+                RtbWriteCB handle = new RtbWriteCB(RtbWrite);
                 rtb.Invoke(handle, rtb, str);
             }
             else
@@ -63,7 +79,7 @@
             }
             if (rtb.InvokeRequired)
             {
-                RtbWriteHandler handle = new RtbWriteHandler(RtbWrite);
+                RtbWriteCB handle = new RtbWriteCB(RtbWrite);
                 rtb.Invoke(handle, rtb, String.Format(format, args));
             }
             else
@@ -82,7 +98,7 @@
 
             if (rtb.InvokeRequired)
             {
-                RtbWriteHandler handle = new RtbWriteHandler(RtbWrite_Limit);
+                RtbWriteCB handle = new RtbWriteCB(RtbWrite_Limit);
                 rtb.Invoke(handle, rtb, str);
             }
             else
@@ -108,7 +124,7 @@
 
             if (rtb.InvokeRequired)
             {
-                RtbWriteHandler handle = new RtbWriteHandler(RtbWrite_Limit);
+                RtbWriteCB handle = new RtbWriteCB(RtbWrite_Limit);
                 rtb.Invoke(handle, rtb, String.Format(format, args));
             }
             else
@@ -123,5 +139,5 @@
                 rtb.AppendText(String.Format(format, args));
             }
         }
-
     }
+}
