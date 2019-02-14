@@ -8,7 +8,7 @@ using System.Windows.Forms;//記得把WinForm.dll加入專案中
 
 namespace DelegateTool
 {
-    public static class UIDelegate
+    public static class WinFormDelegate
     {
         /**
          * [引數]
